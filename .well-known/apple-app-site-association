@@ -1,0 +1,12 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "YDV586RV75.com.arsapp.app",
+        "paths": ["/davet", "/davet/*"],
+        "components": [{ "/": "/davet", "comment": "Arş daveti" }, { "/": "/davet/*", "comment": "Arş daveti" }]
+      }
+    ]
+  }
+}

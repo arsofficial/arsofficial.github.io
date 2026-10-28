@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Arş daveti</title>
+  <meta name="description" content="Arş'ta namaz arkadaşı ol ya da hatim grubuna katıl." />
+  <style>
+    :root { --bg: #0B1230; --card: rgba(255,255,255,0.06); --line: rgba(255,255,255,0.14); --text: #F5F3EF; --muted: #9CA3B8; --gold: #E3C27A; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; background: radial-gradient(120% 80% at 50% 0%, #1B2550 0%, var(--bg) 60%); color: var(--text); font: 16px/1.5 -apple-system, "Segoe UI", Inter, Roboto, sans-serif; }
+    main { width: 100%; max-width: 420px; text-align: center; }
+    img.logo { width: 84px; height: 84px; border-radius: 22px; box-shadow: 0 10px 30px rgba(0,0,0,0.35); }
+    h1 { font-size: 26px; margin: 18px 0 6px; letter-spacing: -0.3px; }
+    p { margin: 0 0 14px; color: var(--muted); }
+    .kod { display: inline-block; margin: 6px 0 18px; padding: 10px 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); font: 600 22px/1 ui-monospace, Menlo, monospace; letter-spacing: 3px; color: var(--gold); }
+    .btn { display: block; margin: 10px 0; padding: 14px 18px; border-radius: 999px; text-decoration: none; font-weight: 600; }
+    .btn.primary { background: var(--gold); color: #1A1428; }
+    .btn.secondary { border: 1px solid var(--line); background: var(--card); color: var(--text); }
+    .small { font-size: 13px; margin-top: 18px; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <img class="logo" src="../logo.png" alt="Arş" />
+    <h1 id="baslik">Arş daveti</h1>
+    <p id="aciklama">Uygulama yüklüyse açılıyor…</p>
+    <div id="kod" class="kod hidden"></div>
+    <a id="ac" class="btn primary" href="#">Uygulamada aç</a>
+    <a id="ios" class="btn secondary hidden" href="https://apps.apple.com/app/id6826533482">App Store'dan indir</a>
+    <a id="android" class="btn secondary hidden" href="https://play.google.com/store/apps/details?id=com.arsapp.app">Google Play'den indir</a>
+    <p class="small" id="not">İndirdikten sonra uygulamayı açıp bu daveti tekrar tıkla; kod kendiliğinden girer.</p>
+  </main>
+  <script>
+    (function () {
+      var q = new URLSearchParams(location.search);
+      var kod = q.get('kod');
+      var u = q.get('u');
+      var ua = navigator.userAgent || '';
+      var ios = /iPhone|iPad|iPod/i.test(ua);
+      var android = /Android/i.test(ua);
+      var hedef = 'ars://davet?' + (kod ? 'kod=' + encodeURIComponent(kod) : 'u=' + encodeURIComponent(u || ''));
+
+      var baslik = document.getElementById('baslik');
+      var aciklama = document.getElementById('aciklama');
+      var kodEl = document.getElementById('kod');
+      if (kod) {
+        baslik.textContent = 'Hatim grubuna davet';
+        aciklama.textContent = 'Davet kodu:';
+        kodEl.textContent = kod.toUpperCase();
+        kodEl.classList.remove('hidden');
+      } else if (u) {
+        baslik.textContent = '@' + u + ' seni namaz arkadaşı olarak ekledi';
+        aciklama.textContent = 'Arş\'ta kabul etmek için uygulamayı aç.';
+      } else {
+        baslik.textContent = 'Arş';
+        aciklama.textContent = 'Namaz vakitleri, hatim ve namaz arkadaşı.';
+        document.getElementById('not').textContent = '';
+      }
+
+      document.getElementById('ac').setAttribute('href', hedef);
+      document.getElementById('ios').classList.toggle('hidden', !(ios || !android));
+      document.getElementById('android').classList.toggle('hidden', !(android || !ios));
+
+      // Yüklüyse evrensel link zaten uygulamayı açmıştır; burası yedek: şemayı dene, açılmazsa mağaza kalır
+      if ((ios || android) && (kod || u)) {
+        var t = Date.now();
+        location.href = hedef;
+        setTimeout(function () {
+          if (Date.now() - t < 2500 && !document.hidden) {
+            aciklama.textContent = (kod ? 'Davet kodu:' : 'Arş\'ta kabul etmek için uygulamayı aç.') + ' Uygulama yüklü değilse mağazadan indir.';
+          }
+        }, 1500);
+      }
+    })();
+  </script>
+</body>
+</html>
