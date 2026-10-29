@@ -4,7 +4,7 @@
     "target": {
       "namespace": "android_app",
       "package_name": "com.arsapp.app",
-      "sha256_cert_fingerprints": ["PLAY_IMZA_SHA256_BURAYA"]
+      "sha256_cert_fingerprints": ["6F:99:9E:A8:6C:BB:6A:7C:6B:35:59:AE:FA:CA:A8:D2:B6:61:4D:B3:77:18:D9:35:2D:3B:CD:A5:8A:65:F6:D8"]
     }
   }
 ]
